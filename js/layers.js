@@ -26,6 +26,8 @@ addLayer("p", {
         if(hasAchievement("g", 13)) mult = mult.times(2.23)
         if(hasAchievement("g", 25)) mult = mult.times(5)
         if(hasAchievement("g", 34)) mult = mult.times(2)
+        if(hasAchievement("g", 75)) mult = mult.times(new Decimal(player.p.alove.aloveLevel).pow(3).add(1))
+        if(hasAchievement("g", 81)) mult = mult.times(new Decimal(player.p.alove.aloveLevel).pow(3).add(1))
         if(hasUpgrade("hyp", 11)) mult = mult.times(3)
         if(hasUpgrade("hyp", 13)) mult = mult.times(player.hyp.points.add(1).sqrt())
         mult = mult.times(player.p.number.add(3).log(3))
@@ -33,10 +35,22 @@ addLayer("p", {
         if(hasUpgrade("ma", 13)) mult = mult.times(10)
         if(hasUpgrade("ma", 15)) mult = mult.times(32)
         if(hasUpgrade("ma", 21)) mult = mult.times(64)
+        if(hasUpgrade("psqur", 22)) mult = mult.times(1000)
+        if(hasUpgrade("psqur", 23)) mult = mult.times(256)
+        if(hasUpgrade("psqur", 24)) mult = mult.times(256)
+        if(hasUpgrade("psqur", 25)) mult = mult.times(256)
         if(hasUpgrade("pcub", 12)) mult = mult.times(80)
         if(hasUpgrade("pcub", 13)) mult = mult.times(45)
         if(hasUpgrade("pcub", 14)) mult = mult.times(1000)
         if(hasUpgrade("pcub", 15)) mult = mult.times(100)
+        if(hasUpgrade("pcub", 21)) mult = mult.times(256)
+        if(hasUpgrade("pcub", 22)) mult = mult.times(256)
+        if(hasUpgrade("pcub", 23)) mult = mult.times(256)
+        if(hasUpgrade("pcub", 24)) mult = mult.times(256)
+        if(hasUpgrade("pcub", 25)) mult = mult.times(256)
+        if(hasUpgrade("pm", 12)) mult = mult.times(1e5)
+        if(hasUpgrade("pm", 13)) mult = mult.times(1e3)
+        if(hasUpgrade("pm", 22)) mult = mult.times(1e5)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -202,6 +216,9 @@ addLayer("hyp", {
         if(hasUpgrade("hyp", 15)) mult = mult.times(2)
         if(hasUpgrade("ma", 14)) mult = mult.times(4)
         if(hasAchievement("g", 55)) mult = mult.times(1.7)
+        if(hasAchievement("g", 91)) mult = mult.times(1000)
+        if(hasAchievement("g", 101)) mult = mult.times(2e5)
+        mult = mult.times(new Decimal.pow(1e11, player.pe.points))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -248,6 +265,16 @@ addLayer("hyp", {
         if (hasAchievement('g', 72)) passivebase = 1
         return passivebase
     },
+  automate() {
+    if(hasAchievement("g", 81)) {
+      buyUpgrade("hyp", 11)
+      buyUpgrade("hyp", 12)
+      buyUpgrade("hyp", 13)
+      buyUpgrade("hyp", 14)
+      buyUpgrade("hyp", 15)
+      buyUpgrade("hyp", 21)
+    }
+  }
 })
 
 addLayer("psqur", {
@@ -271,7 +298,11 @@ addLayer("psqur", {
         if(hasAchievement("g", 43)) mult = mult.times(1.5)
         if(hasAchievement("g", 51)) mult = mult.times(2.15)
         if(hasAchievement("g", 53)) mult = mult.times(2.15)
-        if(hasAchievement("pcub", 11)) mult = mult.times(4)
+        if(hasUpgrade("pcub", 11)) mult = mult.times(4)
+        if(hasUpgrade("pm", 11)) mult = mult.times(10)
+        if(hasUpgrade("pm", 14)) mult = mult.times(100)
+        if(hasUpgrade("pm", 15)) mult = mult.times(100)
+        if(hasUpgrade("pm", 21)) mult = mult.times(1e4)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -309,6 +340,30 @@ addLayer("psqur", {
         title:"xsqrt(2048) affacted II",
         description:"hehe",
         cost:new Decimal(1e6)
+      },
+      22:{
+        title:"x1000 prestige point gain",
+        description:"what what?",
+        cost:new Decimal(1e15),
+        unlocked() {return hasMilestone("pm", 0)}
+      },
+       23:{
+        title:"x256 prestige point gain",
+        description:"what what?",
+        cost:new Decimal(1e19),
+        unlocked() {return hasMilestone("pm", 0)}
+      },
+      24:{
+        title:"x256 prestige point gain",
+        description:"what what?",
+        cost:new Decimal(1e25),
+        unlocked() {return hasMilestone("pm", 0)}
+      },
+      25:{
+        title:"x256 prestige point gain",
+        description:"what what?",
+        cost:new Decimal(1e33),
+        unlocked() {return hasMilestone("pm", 0)}
       },
     },
     tabFormat: {
@@ -357,7 +412,12 @@ addLayer("psqur", {
           return l
         }
     },
-}
+},
+  passiveGeneration() {
+        let passivebase = 0
+        if (hasAchievement('g', 81)) passivebase = 1
+        return passivebase
+    },
 })
 
 addLayer("ma", {
@@ -384,7 +444,7 @@ addLayer("ma", {
         return new Decimal(1)
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
-    layerShown(){return true},
+    layerShown(){return hasAchievement("g", 41)},
     upgrades:{
       11:{
         title:"Goaled Decuple",
@@ -416,7 +476,12 @@ addLayer("ma", {
         description:"wowowoow",
         cost:new Decimal(1e6)
       },
-    }
+    },
+    passiveGeneration() {
+        let passivebase = 0
+        if (hasAchievement('g', 112)) passivebase = 2
+        return passivebase
+    },
 })
 
 addLayer("pcub", {
@@ -470,7 +535,179 @@ addLayer("pcub", {
         description:"epic idk",
         cost:new Decimal(750)
       },
-    }
+      21:{
+        title:"x250 prestige point gain",
+        description:"what what?",
+        cost:new Decimal(1e6),
+        unlocked() {return hasMilestone("pm", 0)}
+      },
+      22:{
+        title:"x250 prestige point gain",
+        description:"what what?",
+        cost:new Decimal(1e9),
+        unlocked() {return hasMilestone("pm", 0)}
+      },
+      23:{
+        title:"x250 prestige point gain",
+        description:"what what?",
+        cost:new Decimal(1e12),
+        unlocked() {return hasMilestone("pm", 0)}
+      },
+      24:{
+        title:"x250 prestige point gain",
+        description:"what what?",
+        cost:new Decimal(1e14),
+        unlocked() {return hasMilestone("pm", 0)}
+      },
+       25:{
+        title:"x250 prestige point gain",
+        description:"what what?",
+        cost:new Decimal(1e20),
+        unlocked() {return hasMilestone("pm", 2)}
+      },
+    },
+    passiveGeneration() {
+        let passivebase = 0
+        if (hasAchievement('g', 112)) passivebase = 2
+        return passivebase
+    },
+})
+
+addLayer("pm", {
+    name: "prestige mactive", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "PM", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    branches:["ma"],
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "#bac700",
+    requires: new Decimal(1.5e12), // Can be a function that takes requirement increases into account
+    resource: "prestige mactive", // Name of prestige currency
+    baseResource: "prestige squared", // Name of resource prestige is based on
+    baseAmount() {return player.psqur.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.2, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        if(hasMilestone("pm", 1)) mult = mult.times(1.4)
+        if(hasMilestone("pm", 3)) mult = mult.times(1.9)
+        if(hasUpgrade("pm", 23)) mult = mult.times(10)
+        if(hasUpgrade("pm", 24)) mult = mult.times(1e4)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 3, // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return player.g.bc >= 6},
+    upgrades:{
+      11:{
+        title:"When so win.",
+        description:"Outpated x10 P<sup>2</sup> Gain.",
+        cost:new Decimal(3)
+      },
+      12:{
+        title:"When so win. II",
+        description:"Outpated x100,000 P Gain.",
+        cost:new Decimal(123)
+      },
+       13:{
+        title:"What heven?",
+        description:"Outpated x1,000 P Gain.",
+        cost:new Decimal(1e3)
+      },
+      14:{
+        title:"When so win.",
+        description:"Outpated x100 P<sup>2</sup> Gain.",
+        cost:new Decimal(4.5e4)
+      },
+      15:{
+        title:"When so win. II",
+        description:"Outpated x100 P<sup>2</sup> Gain.",
+        cost:new Decimal(1e5)
+      },
+      21:{
+        title:"When so win. III",
+        description:"Outpated x10,000 P<sup>2</sup> Gain.",
+        cost:new Decimal(2e6)
+      },
+      22:{
+        title:"What what",
+        description:"Outpated x100,000 P Gain.",
+        cost:new Decimal(7.5e6)
+      },
+      23:{
+        title:"What what",
+        description:"Outpated x10 PM Gain.",
+        cost:new Decimal(2e7)
+      },
+      24:{
+        title:"What what",
+        description:"Outpated x1e4 PM Gain.",
+        cost:new Decimal(1.5e8)
+      },
+    },
+    milestones: {
+    0: {
+        requirementDescription: "10 PM",
+        effectDescription: "Unlock new four for p^3 and p^2 upgrades.",
+        done() { return player.pm.points.gte(10) }
+    },
+    1: {
+        requirementDescription: "1,000,000 PM",
+        effectDescription: "Gain 40% more P^2.",
+        done() { return player.pm.points.gte(1e6) },
+        unlocked() {return player.g.bc >= 7}
+    },
+     2: {
+        requirementDescription: "10,000,000 PM",
+        effectDescription: "unlock one upgrade.",
+        done() { return player.pm.points.gte(1e7) },
+        unlocked() {return player.g.bc >= 7}
+    },
+    3: {
+        requirementDescription: "123,456,789 PM",
+        effectDescription: "Gain 90% more PM",
+        done() { return player.pm.points.gte(123456789) },
+        unlocked() {return player.g.bc >= 7}
+    },
+    4: {
+        requirementDescription: "1e11 PM",
+        effectDescription: "Unlock new layer.",
+        done() { return player.pm.points.gte(1e11) },
+        unlocked() {return hasAchievement("g", 105)}
+    },
+}
+})
+
+addLayer("pe", {
+    name: "prestige earth", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "PE", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    branches:["pm"],
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    color: "cyan",
+    effectDescription() {return "multiplying hyper gain by "+format(new Decimal.pow(1e11, player.pe.points))},
+    requires: new Decimal(1e200), // Can be a function that takes requirement increases into account
+    resource: "prestige earth", // Name of prestige currency
+    baseResource: "prestige points", // Name of resource prestige is based on
+    baseAmount() {return player.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 2, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1.95)
+    },
+    row: 3, // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return true}
 })
 
 addLayer("g", {
@@ -714,8 +951,148 @@ addLayer("g", {
       73: {
             name: "Major Kambia II",
             done() {return player.psqur.points.gte(1e12)},
-            goalTooltip: "Reach 1e12 prestige squared. Reward:wait for next update.",
-            doneTooltip: "Reach 1e12 prestige square. Reward:wait for next update. (Completed)",
+            goalTooltip: "Reach 1e12 prestige squared.",
+            doneTooltip: "Reach 1e12 prestige square. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      74: {
+            name: "20% Absolution",
+            done() {return player.psqur.points.gte(1.221e12)},
+            goalTooltip: "Reach 1.221e12 prestige squared.",
+            doneTooltip: "Reach 1.221e12 prestige squared. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      75: {
+            name: "Another Layer?",
+            done() {return player.pm.points.gte(1)},
+            goalTooltip: "Reach 1 PM. Reward:This prestige points recived to alove level cubed gain.",
+            doneTooltip: "Reach 1 PM. Reward:This prestige points recived to alove level cubed gain. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      81: {
+            name: "aa",
+            done() {return player.pm.points.gte(8)},
+            goalTooltip: "Reach 8 PM. Reward:This prestige points recived to alove level cubed gain II and automatticy upgrades for hyper and can passiving p^2 generation.",
+            doneTooltip: "Reach 8 PM. Reward:This prestige points recived to alove level cubed gain II and automatticy upgrades for hyper and can passiving p^2 generation. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      82: {
+            name: "24% Absolution",
+            done() {return player.psqur.points.gte(1e15)},
+            goalTooltip: "Reach 1e15 prestige squared.",
+            doneTooltip: "Reach 1e15 prestige squared. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      83: {
+            name: "ANY ALOVE",
+            done() {return player.p.alove.aloveLevel >= 111},
+            goalTooltip: "Reach Alove level any 111.",
+            doneTooltip: "Reach Alove level any 111. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      84: {
+            name: "ALOVE RAINBOW",
+            done() {return player.p.alove.aloveLevel >= 123},
+            goalTooltip: "Reach Alove level any 123.",
+            doneTooltip: "Reach Alove level any 123. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+       85: {
+            name: "Mega Lol",
+            done() {return hasUpgrade("pm", 12)},
+            goalTooltip: "Reach PM Upgrader 12.",
+            doneTooltip: "Reach PM Upgrader 12. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      91: {
+            name: "If we googology we of now.",
+            done() {return player.p.points.gte(1e100)},
+            goalTooltip: "Reach 1e100 prestige points. Reward:Hyper Mulitipler by 1000",
+            doneTooltip: "Reach 1e100 prestige points. Reward:Hyper Mulitipler by 1000 (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+       92: {
+            name: "Cool Thousand",
+            done() {return hasUpgrade("pm", 13)},
+            goalTooltip: "Reach PM Upgrader 13.",
+            doneTooltip: "Reach PM Upgrader 13. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      93: {
+            name: "What of this?",
+            done() {return player.p.points.gte(1e130)},
+            goalTooltip: "Reach 1e130 prestige points.",
+            doneTooltip: "Reach 1e130 prestige points. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      94: {
+            name: "ALOVE DOUBLE'S HUNDRED",
+            done() {return player.p.alove.aloveLevel >= 200},
+            goalTooltip: "Reach Alove level any 200.",
+            doneTooltip: "Reach Alove level any 200. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+       95: {
+            name: "1 Row Done on PM?",
+            done() {return hasUpgrade("pm", 15)},
+            goalTooltip: "Reach PM Upgrader 15.",
+            doneTooltip: "Reach PM Upgrader 15. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      101: {
+            name: "Out of Googol * (10^(100 - 50))",
+            done() {return player.p.points.gte(1e150)},
+            goalTooltip: "Reach 1e150 prestige points. Reward:Hyper Mulitipler by 2e5",
+            doneTooltip: "Reach 1e150 prestige points. Reward:Hyper Mulitipler by 2e5 (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      102: {
+            name: "2 milestone rows done",
+            done() {return hasMilestone("pm", 1)},
+            goalTooltip: "Reach 2 milestones done.",
+            doneTooltip: "Reach 2 milestones done. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      103: {
+            name: "3 milestone rows done",
+            done() {return hasMilestone("pm", 2)},
+            goalTooltip: "Reach 3 milestones done.",
+            doneTooltip: "Reach 3 milestones done. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      104: {
+            name: "Get of Out!",
+            done() {return player.p.points.gte(1e166)},
+            goalTooltip: "Reach 1e166 prestige points. Reward:Be First Mass Upgrader 12 more in order.",
+            doneTooltip: "Reach 1e166 prestige points. Reward:Be First Mass Upgrader 12 more in order. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      105: {
+            name: "4 milestone rows done",
+            done() {return hasMilestone("pm", 3)},
+            goalTooltip: "Reach 4 milestones done. Reward:Unlock one milestone.",
+            doneTooltip: "Reach 4 milestones done. Reward:Unlock one milestone. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      111: {
+            name: "Out Order?",
+            done() {return player.pm.points.gte(1e10)},
+            goalTooltip: "Reach 1e10 prestige mactive.",
+            doneTooltip: "Reach 1e10 prestige mactive. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      112: {
+            name: "Booster of think?",
+            done() {return player.pm.points.gte(1e11)},
+            goalTooltip: "Reach 1e11 prestige mactive. Reward:can automatticy gain mass and prestige cubed.",
+            doneTooltip: "Reach 1e11 prestige mactive. Reward:can automatticy gain mass and prestige cubed. (Completed)",
+            onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
+        },
+      113: {
+            name: "Earth Nice",
+            done() {return player.p.points.gte(1e200)},
+            goalTooltip: "Reach 1e200 prestige points.",
+            doneTooltip: "Reach 1e200 prestige points. (Completed)",
             onComplete() {player[this.layer].points = player[this.layer].points.add(1)},
         },
     },
@@ -741,6 +1118,14 @@ addLayer("g", {
       player.g.req = new Decimal(25)
     }
     if(player.g.bc >= 5) {
+      player.g.name = "Unlock Prestige Mactive"
+      player.g.req = new Decimal(34)
+    }
+    if(player.g.bc >= 6) {
+      player.g.name = "Unlock Three Milestone on PM"
+      player.g.req = new Decimal(46)
+    }
+    if(player.g.bc >= 7) {
       player.g.name = "???"
       player.g.req = new Decimal("ee99999")
     }

@@ -13,11 +13,15 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.0.0",
-	name: "Learn Layers",
+	num: "1.1.0",
+	name: "More Owo",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+  <h3>v1.1.0 - More Owo</h3><br>
+		- Imporved {PM, PE}.<br>
+    - Add 2 Layers<br>
+    - Balanced Up To 53 Goals.<br>
 	<h3>v1.0.0 - Learn Layers</h3><br>
 		- Imporved {P, P<sup>2</sup>, P<sup>3</sup>, H, M} and {Alove, Number, Buyables}.<br>
 		- Imporved Goals.<br>
@@ -74,7 +78,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.g.points.gte(new Decimal("33"))
+	return player.g.points.gte(new Decimal("53"))
 }
 
 
